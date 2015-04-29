@@ -1,17 +1,28 @@
 package com.example.tim.settingsun;
 
+import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.Observable;
+import java.util.Observer;
 
-public class MainActivity extends ActionBarActivity {
+
+public class MainActivity extends Activity implements Observer {
+
+    private Game game;
+    private SunView sv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        this.game = new Game();
+
+        sv = (SunView) this.findViewById(R.id.sunview);
     }
 
 
@@ -35,5 +46,10 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void update(Observable observable, Object o) {
+
     }
 }

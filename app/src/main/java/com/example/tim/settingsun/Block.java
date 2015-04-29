@@ -6,10 +6,16 @@ package com.example.tim.settingsun;
 public class Block {
     public int type;
     public float x, y;
+    public boolean isSnapped = true;
 
     public Block(int x, int y, int type){
         this.x = (float) x;
         this.y = (float) y;
         this.type = type;
+    }
+
+    public void moveBlock(float dx, float dy, Direction d){
+
+
     }
 }

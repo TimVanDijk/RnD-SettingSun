@@ -1,5 +1,6 @@
 package com.example.tim.settingsun;
 
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -15,7 +16,7 @@ import android.view.View;
 
 public class SunView extends View implements Observer{
 
-    //private Game game;
+    private Game game;
     private float margin_horizontal;
     private float margin_vertical;
 
@@ -24,6 +25,8 @@ public class SunView extends View implements Observer{
     private float cell_spacing;
 
     private float circle_margin;
+
+    private final int BLOCK_COLOR = Color.CYAN;
 
 
     public SunView(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -46,7 +49,7 @@ public class SunView extends View implements Observer{
         // nothing to do
     }
 
-    /*
+
     public void setGame(Game game) {
 
         if(this.game!= null)
@@ -54,8 +57,8 @@ public class SunView extends View implements Observer{
         this.game = game;
         this.game.addObserver(this);
 
-    }*/
-    /*
+    }
+
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
@@ -73,13 +76,16 @@ public class SunView extends View implements Observer{
         margin_horizontal = (w - (cell_size * game.getWidth())) / 2;
         margin_vertical = (h - (cell_size * game.getHeight())) / 2;
 
-    }*/
+        circle_margin = 0.1f * cell_size;
+        cell_radius = (cell_size - circle_margin * 2f) * 0.5f;
+    }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        Paint paint = new Paint();
+        canvas.drawCircle(1, 5, 0.5f, paint);
         this.drawBackground(canvas);
-        //EVEN KIJKEN WAT HIER MEE TE DOEN
         if(game == null)
             return;
 
@@ -91,27 +97,33 @@ public class SunView extends View implements Observer{
     }
 
     private void drawSunBlockAdapt(Canvas canvas, Block b, Paint paint) {
-
-        drawSunblock(canvas, x, y, b.type, paint);
+        float x = margin_horizontal + b.x * cell_size;
+        float y = margin_vertical + b.y * cell_size;
+        if (b.x > 0)
+            x += (b.x - 1) * cell_spacing;
+        if (b.y > 0)
+            y += (b.y - 1) * cell_spacing;
+        drawSunBlock(canvas, x, y, b.type, paint);
     }
 
     private void drawSunBlocks(Canvas canvas) {
         Paint sunBlockPaint = new Paint();
+        Block[] blocks = game.getPuzzle().getBlocks();
         for (Block b: blocks) {
-            drawSunBlockAdapt(canvas, b, paint);
+            drawSunBlockAdapt(canvas, b, sunBlockPaint);
         }
     }
 
 
     private void drawSunBlock(Canvas canvas, float x, float y, int type, Paint paint) {
-        float xSize = blockinfo.getDimensions(type).x * cell_size;
-        float ySize = blockinfo.getDimensions(type).y * cell_size;
-        float centerX = blockinfo.getCenter(type).x;
-        float centerY = blockinfo.getCenter(type).y;
-        paint.setColor(COLOR_BLOCK);
-        canvas.drawRoundRect(x, y, x + xSize, y + ySize, cell_radius, cell_radius, paint)
-        paint.setColor(blockinfo.getColor(type));
-        canvas.drawCircle(x + centerX, y + centerY, 0.5 * cell_size - circle_margin, paint)
+        float xSize = BlockInfo.getDimensions(type).x * cell_size;
+        float ySize = BlockInfo.getDimensions(type).y * cell_size;
+        float centerX = BlockInfo.getCenter(type).x;
+        float centerY = BlockInfo.getCenter(type).y;
+        paint.setColor(BLOCK_COLOR);
+        //canvas.drawRoundRect(x, y, x + xSize, y + ySize, cell_radius, cell_radius, paint);
+        paint.setColor(BlockInfo.getColor(type));
+        canvas.drawCircle(x + centerX, y + centerY, 0.5f * cell_size - circle_margin, paint);
     }
 
     @Override
