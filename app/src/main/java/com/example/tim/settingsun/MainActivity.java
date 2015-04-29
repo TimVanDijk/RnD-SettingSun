@@ -13,6 +13,7 @@ import java.util.Observer;
 public class MainActivity extends Activity implements Observer {
 
     private Game game;
+    private Controller controller;
     private SunView sv;
 
     @Override
@@ -22,8 +23,14 @@ public class MainActivity extends Activity implements Observer {
 
         this.game = new Game();
 
+        this.controller = new Controller(game);
+        this.controller.addObserver(this);
+
         sv = (SunView) this.findViewById(R.id.sunview);
         sv.setGame(game);
+        sv.setOnTouchListener(controller);
+
+        this.controller.start();
 
     }
 
