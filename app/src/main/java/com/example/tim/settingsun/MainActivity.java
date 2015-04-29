@@ -23,6 +23,8 @@ public class MainActivity extends Activity implements Observer {
         this.game = new Game();
 
         sv = (SunView) this.findViewById(R.id.sunview);
+        sv.setGame(game);
+
     }
 
 

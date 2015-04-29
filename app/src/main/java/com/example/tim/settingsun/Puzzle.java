@@ -46,7 +46,7 @@ public class Puzzle {
         puzzle = new int[4][5];
 
         addBlock(0,0,2);
-        addBlock(3,0,2);
+        /*addBlock(3,0,2);
         addBlock(0,3,2);
         addBlock(3,3,2);
         addBlock(1,2,3);
@@ -54,7 +54,7 @@ public class Puzzle {
         addBlock(2,3,1);
         addBlock(2,3,1);
         addBlock(3,3,1);
-        addBlock(3,3,1);
+        addBlock(3,3,1);*/
     }
 
     public Block[] getBlocks() {
