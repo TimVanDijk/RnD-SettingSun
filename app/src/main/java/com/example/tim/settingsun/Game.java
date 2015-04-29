@@ -33,4 +33,15 @@ public class Game extends Observable {
     public int getHeight() {
         return height;
     }
+
+    public boolean isGameOver(){
+        return puzzle.puzzle[1][3] == 4;
+    }
+
+    public void playerMove(float x, float y, Direction d){
+        /*
+        TODO: Translate coordinates of the touch to locations on our ouzzlegrid.
+         */
+        puzzle.moveBlock((int)x, (int)y, d);
+    }
 }
