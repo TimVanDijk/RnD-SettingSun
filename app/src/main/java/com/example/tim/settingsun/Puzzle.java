@@ -45,16 +45,8 @@ public class Puzzle {
     public void initializePuzzle() {
         puzzle = new int[4][5];
 
-        addBlock(0,0,2);
-        /*addBlock(3,0,2);
-        addBlock(0,3,2);
-        addBlock(3,3,2);
-        addBlock(1,2,3);
-        addBlock(1,0,4);
-        addBlock(2,3,1);
-        addBlock(2,3,1);
-        addBlock(3,3,1);
-        addBlock(3,3,1);*/
+        //Kan iemand er even voor zorgen dat hij hier alle blokken toevoegt op de correct locatie? k thnx.
+        addBlock(0,0,2); // Dit is dus het blok helemaal linksbovenin die 1 breed is en 2 hoog.
     }
 
     public Block[] getBlocks() {
