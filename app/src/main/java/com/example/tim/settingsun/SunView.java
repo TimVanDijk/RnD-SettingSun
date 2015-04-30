@@ -17,6 +17,11 @@ public class SunView extends View implements Observer{
 
     private Game game;
     private float margin_horizontal;
+
+    /*public float getMargin_vertical() {
+        return margin_vertical;
+    }*/
+
     private float margin_vertical;
 
     private float cell_size;

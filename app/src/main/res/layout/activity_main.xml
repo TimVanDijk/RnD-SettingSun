@@ -10,6 +10,15 @@
         android:layout_height="wrap_content"
         android:id="@+id/sunview" />
 
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reset puzzle"
+        android:id="@+id/button"
+        android:layout_alignTop="@+id/sunview"
+        android:layout_alignEnd="@+id/sunview"
+        android:onClick="createResetDialog" />
 
 
 </RelativeLayout>

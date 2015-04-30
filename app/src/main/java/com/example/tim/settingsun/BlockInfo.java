@@ -5,6 +5,9 @@ import android.graphics.Color;
 public class BlockInfo {
 
     public static Tuple<Integer> getDimensions(int type) {
+        /**
+         * Fetches the desired block size by type. The type can be a 1x1, 1x2, 2x1,or 2x2 block.
+         */
         switch (type) {
             case 1:
                 return new Tuple<>(1 ,1);
@@ -20,6 +23,9 @@ public class BlockInfo {
     }
 
     public static Tuple<Float> getCenter(int type){
+        /**
+         * Calculates the center coordinates of the block, depending in block type
+         */
         return new Tuple<>(
                 new Float(0.5 * (float) getDimensions(type).x),
                 new Float(0.5 * (float) getDimensions(type).y)
@@ -27,6 +33,9 @@ public class BlockInfo {
     }
 
     public static int getColor(int type){
+        /**
+         * Assigns different colors to different sized blocks
+         */
         switch (type) {
             case 1:
                 return Color.YELLOW;

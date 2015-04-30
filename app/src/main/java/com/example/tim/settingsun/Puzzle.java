@@ -13,6 +13,9 @@ public class Puzzle {
     }
 
     public Puzzle(Puzzle p){
+        /**
+         * Copy constructor
+         */
         puzzle = new int[4][5];
         for (int i = 0; i < 4; i++){
             for (int j = 0; j < 5; j++){
@@ -22,6 +25,7 @@ public class Puzzle {
     }
 
     private boolean addBlock(int x, int y, int type) {
+
         boolean test = true;
 
         for (int i = 0; i < BlockInfo.getDimensions(type).x; i++) {
@@ -62,7 +66,18 @@ public class Puzzle {
         addBlock(2,3,1);
         addBlock(1,4,1);
         addBlock(2,4,1);
-
+        /*
+        addBlock(0,3,4);
+        addBlock(0,0,1);
+        addBlock(1,0,1);
+        addBlock(2,0,1);
+        addBlock(3,0,1);
+        addBlock(1,1,1);
+        addBlock(2,1,1);
+        addBlock(3,1,1);
+        addBlock(1,2,1);
+        addBlock(2,2,1);
+        */
     }
 
     public Block[] getBlocks() {
@@ -99,6 +114,8 @@ public class Puzzle {
         int width = BlockInfo.getDimensions(puzzle[x][y]).x;
         int height = BlockInfo.getDimensions(puzzle[x][y]).y;
 
+        if (isGameWon())
+            return false;
         //check of binnen scherm
         //check hoeft niet aan beide kanten, want als waar voor 1 kant, ook waar voor ander
         if (x + d.dx < 0)

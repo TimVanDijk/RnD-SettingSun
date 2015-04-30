@@ -1,5 +1,6 @@
 package com.example.tim.settingsun;
 
+import android.app.AlertDialog;
 import android.os.Handler;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -33,6 +34,9 @@ public class Controller extends Observable implements OnTouchListener{
 
 
     private void resetTouchLocation()
+    /**
+     * Sets the x and y location to -1, which means that no presses are registered at this moment
+     */
     {
         this.startx = -1;
         this.starty = -1;
@@ -43,6 +47,11 @@ public class Controller extends Observable implements OnTouchListener{
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         //Log.d("Controller","Touched");
+        /**
+         * Checks whether the user touches the screen. If it does, it finds out which block is pressed,
+         * and in what direction the user swipes. If it makes for a valid move (a block is pressed,
+         * no blocks in the way, new position not outside the playing field), it moves it.
+         */
 
         if(startx == -1 || starty == -1)
         {
@@ -86,6 +95,10 @@ public class Controller extends Observable implements OnTouchListener{
                 Log.d("after","after");
                 a=null;
                 view.postInvalidate();
+                if (game.isGameWon()) {
+                    setChanged();
+                    notifyObservers();
+                }
             }
             else {
                 a=null;
