@@ -1,5 +1,7 @@
 package com.example.tim.settingsun;
 
+import android.util.Log;
+
 import java.util.LinkedList;
 import java.util.Observable;
 
@@ -34,14 +36,16 @@ public class Game extends Observable {
         return height;
     }
 
-    public boolean isGameOver(){
+    public boolean isGameWon(){
         return puzzle.puzzle[1][3] == 4;
     }
 
     public void playerMove(float x, float y, Direction d){
         /*
-        TODO: Translate coordinates of the touch to locations on our ouzzlegrid.
+        TODO: Translate coordinates of the touch to locations on our puzzlegrid.
          */
-        puzzle.moveBlock((int)x, (int)y, d);
+
+        puzzle.moveBlock((int) (x / 1920), (int) (y / 1080), d);
+
     }
 }
