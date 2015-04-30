@@ -11,9 +11,10 @@ import java.util.Observable;
 public class Game extends Observable {
     private LinkedList<Puzzle> history;
     private Puzzle puzzle;
+    public int moves=0;
 
-    private final int DEFAULT_WIDTH = 9;
-    private final int DEFAULT_HEIGHT = 16;
+    private final int DEFAULT_WIDTH = 4;
+    private final int DEFAULT_HEIGHT = 5;
 
     private int width, height;
 
@@ -36,16 +37,20 @@ public class Game extends Observable {
         return height;
     }
 
+    public void addPuzzle(Puzzle p) {
+        history.add(p);
+        moves++;
+    }
+
+    public void removePuzzle() {
+        if (history.size()>0) {
+            puzzle = history.removeLast();
+            moves--;
+        }
+    }
+
     public boolean isGameWon(){
-        return puzzle.puzzle[1][3] == 4;
+        return puzzle.isGameWon();
     }
 
-    public void playerMove(float x, float y, Direction d){
-        /*
-        TODO: Translate coordinates of the touch to locations on our puzzlegrid.
-         */
-
-        puzzle.moveBlock((int) (x / 1920), (int) (y / 1080), d);
-
-    }
 }

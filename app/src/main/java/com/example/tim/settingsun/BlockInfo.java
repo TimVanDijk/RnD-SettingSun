@@ -31,11 +31,11 @@ public class BlockInfo {
             case 1:
                 return Color.YELLOW;
             case 2:
-                return Color.BLUE;
+                return Color.rgb(28,96,255);
             case 3:
-                return Color.BLUE;
+                return Color.rgb(28,96,255);
             case 4:
-                return Color.RED;
+                return Color.rgb(255,66,88);
             default:
                 return 0;
         }

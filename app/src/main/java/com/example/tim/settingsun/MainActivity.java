@@ -1,10 +1,12 @@
 package com.example.tim.settingsun;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -23,13 +25,14 @@ public class MainActivity extends Activity implements Observer {
 
         this.game = new Game();
 
-        this.controller = new Controller(game);
-        this.controller.addObserver(this);
+
 
         sv = (SunView) this.findViewById(R.id.sunview);
         sv.setGame(game);
-        sv.setOnTouchListener(controller);
 
+        this.controller = new Controller(game, sv);
+        this.controller.addObserver(this);
+        sv.setOnTouchListener(controller);
         this.controller.start();
 
     }
@@ -60,5 +63,13 @@ public class MainActivity extends Activity implements Observer {
     @Override
     public void update(Observable observable, Object o) {
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        game.removePuzzle();
+        sv.postInvalidate();
+        //new AlertDialog.Builder(this)
+          //  .setTitle("!").create().show();
     }
 }

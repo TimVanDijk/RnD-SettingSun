@@ -38,8 +38,10 @@ public class Puzzle {
             Log.d("MONITORING", "block added");
             for (int i = 0; i < BlockInfo.getDimensions(type).x; i++) {
                 for (int j = 0; j < BlockInfo.getDimensions(type).y; j++) {
-                    if (puzzle[x + i][y + j] == 0)
+                    if (puzzle[x + i][y + j] == 0) {
                         puzzle[x + i][y + j] = -1;
+                    }
+
                 }
             }
         }
@@ -71,6 +73,7 @@ public class Puzzle {
             for (int j = 0; j < 5; j++) {
                 if (puzzle[i][j] > 0) {
                     blocks[index] = new Block(i, j, puzzle[i][j]);
+                    Log.d("Monitor","block added to array: " +index);
                     index++;
                 }
             }
@@ -79,7 +82,6 @@ public class Puzzle {
     }
 
     public void moveBlock(int x, int y, Direction d) {
-        if (canMove(x, y, d)) {
             int type = puzzle[x][y];
             int width = BlockInfo.getDimensions(puzzle[x][y]).x;
             int height = BlockInfo.getDimensions(puzzle[x][y]).y;
@@ -90,23 +92,22 @@ public class Puzzle {
             puzzle[x + width - 1][y + height - 1] = 0;
 
             addBlock(x + d.dx, y + d.dy, type);
-        }
 
     }
 
-    private boolean canMove(int x, int y, Direction d){
+    public boolean canMove(int x, int y, Direction d){
         int width = BlockInfo.getDimensions(puzzle[x][y]).x;
         int height = BlockInfo.getDimensions(puzzle[x][y]).y;
 
         //check of binnen scherm
         //check hoeft niet aan beide kanten, want als waar voor 1 kant, ook waar voor ander
-        if (x + d.dx < 0 || x + d.dx > 3)
+        if (x + d.dx < 0)
             return false;
-        if (x + width + d.dx - 1 > 4)
+        if (x + width + d.dx - 1 >= 4)
             return false;
-        if (y + d.dy < 0 || x + d.dy > 4)
+        if (y + d.dy < 0)
             return false;
-        if (y + height + d.dy - 1 > 5)
+        if (y + height + d.dy - 1 >= 5)
             return false;
 
         //check of botsing
@@ -120,7 +121,7 @@ public class Puzzle {
         if (d.dx < 0) {
             if (puzzle[x + d.dx][y] != 0)
                 return false;
-            if (puzzle[x + d.dx][y + height] != 0)
+            if (puzzle[x + d.dx][y + height - 1] != 0)
                 return false;
         }
 
@@ -139,5 +140,9 @@ public class Puzzle {
         }
 
         return true;
+    }
+
+    public boolean isGameWon(){
+        return puzzle[1][3] == 4;
     }
 }

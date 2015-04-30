@@ -1,6 +1,6 @@
 package com.example.tim.settingsun;
 
-import java.util.ArrayList;
+
 import java.util.Observable;
 import java.util.Observer;
 
@@ -9,14 +9,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
 import android.view.View;
-import android.view.WindowManager;
 
-//import com.example.snake.game.model.Game;
-//import com.example.snake.game.model.Point;
 
 public class SunView extends View implements Observer{
 
@@ -30,9 +25,8 @@ public class SunView extends View implements Observer{
 
     private float circle_margin;
 
-    private final int BLOCK_COLOR = Color.CYAN;
-
-    private float scale = 2.0f;
+    private final int BLOCK_COLOR = Color.rgb(103,224,240);
+    private final int BLOCK_SHADOW = Color.rgb(60,189,207);
 
     public SunView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
@@ -67,30 +61,31 @@ public class SunView extends View implements Observer{
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-
         if(game==null)
             return;
-
         // calculate the dimensions
         cell_size = Math.min(w / game.getWidth(), h / game.getHeight());
-
-        // Spacing will be 2 percent of the width, with a minimum of 1px
-        cell_spacing = Math.max(cell_size * 0.10f, 1f);
-
+        //readjust
+        cell_spacing = cell_size * 0.10f;
+        cell_size = 0.9f * cell_size;
         // calculate the required margin
-        margin_horizontal = (w - (cell_size * game.getWidth())) / 2;
-        margin_vertical = (h - (cell_size * game.getHeight())) / 2;
-
-        circle_margin = 0.1f * cell_size;
-        cell_radius = cell_size  * 0.1f;
+        margin_horizontal = (w - (cell_size * game.getWidth()) - (cell_spacing * game.getWidth())) / 2;
+        margin_vertical = (h - (cell_size * game.getHeight()) - (cell_spacing * game.getHeight())) / 2;
+        circle_margin = 0.2f * cell_size;
+        cell_radius = cell_size * 0.15f;
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
+        //Log.d("MONITORING", "viewposx "+getLeft()+ " viewposy "+getTop());
         super.onDraw(canvas);
         this.drawBackground(canvas);
         if (game != null && game.getPuzzle().getBlocks()[0] != null) {
             drawSunBlocks(canvas);
+            Paint paint = new Paint();
+            paint.setColor(Color.BLACK);
+            paint.setTextSize(40);
+            canvas.drawText("Moves:" + game.moves,margin_horizontal/2f,margin_vertical/2f,paint);
         }
 
     }
@@ -122,8 +117,12 @@ public class SunView extends View implements Observer{
         float ySize = BlockInfo.getDimensions(type).y * cell_size + (BlockInfo.getDimensions(type).y - 1) * cell_spacing;
         float centerX = BlockInfo.getCenter(type).x * cell_size + 0.5f *(BlockInfo.getDimensions(type).x - 1) * cell_spacing;
         float centerY = BlockInfo.getCenter(type).y * cell_size + 0.5f *(BlockInfo.getDimensions(type).y - 1) * cell_spacing;;
+        paint.setColor(BLOCK_SHADOW);
+        canvas.drawRoundRect(x, y, x + xSize, y + ySize + cell_spacing*0.5f, cell_radius, cell_radius, paint);
         paint.setColor(BLOCK_COLOR);
         canvas.drawRoundRect(x, y, x + xSize, y + ySize, cell_radius, cell_radius, paint);
+        paint.setColor(BlockInfo.getColor(type));
+        canvas.drawCircle(x + centerX, y + centerY, 0.5f * cell_size - circle_margin, paint);
         paint.setColor(BlockInfo.getColor(type));
         canvas.drawCircle(x + centerX, y + centerY, 0.5f * cell_size - circle_margin, paint);
     }
@@ -132,6 +131,28 @@ public class SunView extends View implements Observer{
     public void update(Observable observable, Object data) {
         this.postInvalidate();
 
+    }
+
+    public Tuple<Float> getBlockCoords(Block b) {
+        float x = margin_horizontal + b.x * cell_size;
+        float y = margin_vertical + b.y * cell_size;
+        x += b.x * cell_spacing;
+        y += b.y * cell_spacing;
+        x-= cell_spacing/2f;
+        y-= cell_spacing/2f;
+        return new Tuple<>(x,y);
+    }
+
+    public Tuple<Float> getBlockSize(Block b) {
+        float x = margin_horizontal + b.x * cell_size;
+        float y = margin_vertical + b.y * cell_size;
+        x += b.x * cell_spacing;
+        y += b.y * cell_spacing;
+        x-= cell_spacing/2f;
+        y-= cell_spacing/2f;
+        float xSize = BlockInfo.getDimensions(b.type).x * cell_size + (BlockInfo.getDimensions(b.type).x - 1) * cell_spacing;
+        float ySize = BlockInfo.getDimensions(b.type).y * cell_size + (BlockInfo.getDimensions(b.type).y - 1) * cell_spacing;
+        return new Tuple<>(xSize,ySize);
     }
 
 }
