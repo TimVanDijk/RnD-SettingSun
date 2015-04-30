@@ -1,5 +1,7 @@
 package com.example.tim.settingsun;
 
+import android.util.Log;
+
 /**
  * Created by tim on 28-4-15.
  */
@@ -20,33 +22,45 @@ public class Puzzle {
     }
 
     private boolean addBlock(int x, int y, int type) {
-
         boolean test = true;
 
-        for (int i = 0; i < BlockInfo.getDimensions(type).x - 1; i++) {
-            for (int j = 0; j < BlockInfo.getDimensions(type).y - 1; j++) {
-                if (puzzle[x + i][y + j] != 0)
+        for (int i = 0; i < BlockInfo.getDimensions(type).x; i++) {
+            for (int j = 0; j < BlockInfo.getDimensions(type).y; j++) {
+                if (puzzle[x + i][y + j] != 0) {
+                    Log.d("MONITORING", "block not added:(" + x + "," + y + "," + type + ")");
                     test = false;
+                }
             }
         }
 
         if (test) {
             puzzle[x][y] = type;
-            for (int i = 0; i < BlockInfo.getDimensions(type).x - 1; i++) {
-                for (int j = 0; j < BlockInfo.getDimensions(type).y - 1; j++) {
-                    puzzle[x + i][y + j] = -1;
+            Log.d("MONITORING", "block added");
+            for (int i = 0; i < BlockInfo.getDimensions(type).x; i++) {
+                for (int j = 0; j < BlockInfo.getDimensions(type).y; j++) {
+                    if (puzzle[x + i][y + j] == 0)
+                        puzzle[x + i][y + j] = -1;
                 }
             }
         }
-
         return test;
     }
+
 
     public void initializePuzzle() {
         puzzle = new int[4][5];
 
-        //Kan iemand er even voor zorgen dat hij hier alle blokken toevoegt op de correct locatie? k thnx.
-        addBlock(0,0,2); // Dit is dus het blok helemaal linksbovenin die 1 breed is en 2 hoog.
+        addBlock(0,0,2);
+        addBlock(1,0,4);
+        addBlock(3,0,2);
+        addBlock(1,2,3);
+        addBlock(0,3,2);
+        addBlock(3,3,2);
+        addBlock(1,3,1);
+        addBlock(2,3,1);
+        addBlock(1,4,1);
+        addBlock(2,4,1);
+
     }
 
     public Block[] getBlocks() {
@@ -86,11 +100,11 @@ public class Puzzle {
 
         //check of binnen scherm
         //check hoeft niet aan beide kanten, want als waar voor 1 kant, ook waar voor ander
-        if (x + d.dx < 0)
+        if (x + d.dx < 0 || x + d.dx > 3)
             return false;
         if (x + width + d.dx - 1 > 4)
             return false;
-        if (y + d.dy < 0)
+        if (y + d.dy < 0 || x + d.dy > 4)
             return false;
         if (y + height + d.dy - 1 > 5)
             return false;
