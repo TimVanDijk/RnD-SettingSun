@@ -8,7 +8,8 @@ import java.util.Observable;
 
 /**
 * This class is the controller for our game. It detects and handles user input.
-* @authors Ward Theunisse, Tim van Dijk, Martijn Heitkönig en Luuk van Bitterswijk
+ *
+* @author Ward Theunisse, Tim van Dijk, Martijn Heitkönig, Luuk van Bitterswijk
 */
 public class Controller extends Observable implements OnTouchListener{
 
@@ -22,6 +23,11 @@ public class Controller extends Observable implements OnTouchListener{
 
     private Block touchedBlock;
 
+    /**
+     * Constructor for Controller
+     * @param game the game which it controls
+     * @param view the view on which there are motion events that it needs to capture
+     */
     Controller (Game game, SunView view) {
         this.game = game;
         this.handler = new Handler();
@@ -40,6 +46,12 @@ public class Controller extends Observable implements OnTouchListener{
 
 
     @Override
+    /**
+     * Called when the screen is touched.
+     * It first registers the start position of the touch and on the end of the swipe it registers in which direction the swipe was.
+     * Then it tries to move the block that was touched at the start in the direction in which was swiped.
+     * In case no block was selected or it can't be moved in the selected direction, nothing happens.
+     */
     public boolean onTouch (View v, MotionEvent event) {
         /**
          * Checks whether the user touches the screen. If it does, it finds out which block is pressed,
@@ -77,12 +89,12 @@ public class Controller extends Observable implements OnTouchListener{
 
         if(event.getAction() == MotionEvent.ACTION_UP && touchedBlock != null)
         {
-            Direction d = Direction.between(event.getX()-startx, event.getY()-starty);
+            Direction d = Direction.between(event.getX() - startx, event.getY() - starty);
             //check if can move
             if (game.getPuzzle().canMove((int) touchedBlock.x,(int) touchedBlock.y,d)) {
                 game.addPuzzle(new Puzzle(game.getPuzzle()));
                 game.getPuzzle().moveBlock((int) touchedBlock.x,(int) touchedBlock.y,d);
-                touchedBlock =null;
+                touchedBlock = null;
                 view.postInvalidate();
                 if (game.isGameWon()) {
                     setChanged();

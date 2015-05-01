@@ -7,14 +7,18 @@ package com.example.tim.settingsun;
 public class Puzzle {
     public int[][] puzzle;
 
+    /**
+     * Constructor for puzzle.
+     */
     public Puzzle() {
         initializePuzzle();
     }
 
+    /**
+     * Copy constructor for puzzle p
+     * @param p the puzzle whose data we copy into this puzzle
+     */
     public Puzzle(Puzzle p){
-        /**
-         * Copy constructor
-         */
         puzzle = new int[4][5];
         for (int i = 0; i < 4; i++){
             for (int j = 0; j < 5; j++){
@@ -23,6 +27,13 @@ public class Puzzle {
         }
     }
 
+    /**
+     * Adds a block to the puzzle
+     * @param x the x coordinate of the top-left corner of the block
+     * @param y the y coordinate of the top-left corner of the block
+     * @param type the type of the block
+     * @return true if the block has successfully been added. False otherwise.
+     */
     private boolean addBlock(int x, int y, int type) {
 
         boolean valid = true;
@@ -49,6 +60,9 @@ public class Puzzle {
     }
 
 
+    /**
+     * Sets the puzzle's dimensions and fills it with blocks to create the setting sun problem
+     */
     public void initializePuzzle () {
         puzzle = new int[4][5];
 
@@ -64,6 +78,10 @@ public class Puzzle {
         addBlock(2,4,1);
     }
 
+    /**
+     * Adds all blocks in the puzzle to an array. Then returns that array.
+     * @return the array of all blocks in the puzzle.
+     */
     public Block[] getBlocks () {
         Block[] blocks = new Block[10];
         int index = 0;
@@ -79,6 +97,12 @@ public class Puzzle {
         return blocks;
     }
 
+    /**
+     * Moves the block whose top-left coordinates are (x, y) in direction d
+     * @param x the x coordinate of the top-left corner of the block
+     * @param y the y coordinate of the top-left corner of the block
+     * @param d the direction in which the block is to be moved
+     */
     public void moveBlock(int x, int y, Direction d) {
             int type = puzzle[x][y];
             int width = BlockInfo.getDimensions(puzzle[x][y]).x;
@@ -93,13 +117,21 @@ public class Puzzle {
 
     }
 
+    /**
+     * Checks if the specified block can move in direction d
+     * @param x the x coordinate of the top-left corner of the block
+     * @param y the y coordinate of the top-left corner of the block
+     * @param d the the direction in which the block is to be moved
+     * @return true if we can move the block in that direction and the game has not been won already. False otherwise.
+     */
     public boolean canMove (int x, int y, Direction d) {
         int width = BlockInfo.getDimensions(puzzle[x][y]).x;
         int height = BlockInfo.getDimensions(puzzle[x][y]).y;
 
         if (isGameWon())
             return false;
-        //check of binnen scherm
+
+        //check for collision with puzzle boundaries
         if (x + d.dx < 0)
             return false;
         if (x + width + d.dx - 1 >= 4)
@@ -109,7 +141,7 @@ public class Puzzle {
         if (y + height + d.dy - 1 >= 5)
             return false;
 
-        //check of botsing
+        //Check for collision which another block
         if (d.dx > 0) {
             if (puzzle[x + width + d.dx - 1][y] != 0)
                 return false;
@@ -141,6 +173,10 @@ public class Puzzle {
         return true;
     }
 
+    /**
+     * Checks whether the puzzle is solved. It checks this by looking if the sun is in the right position.
+     * @return true if the puzzle is solved. False otherwise.
+     */
     public boolean isGameWon () {
         return puzzle[1][3] == 4;
     }

@@ -1,6 +1,5 @@
 package com.example.tim.settingsun;
 
-
 import java.util.Observable;
 import java.util.Observer;
 
@@ -12,15 +11,10 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
-
 public class SunView extends View implements Observer{
 
     private Game game;
     private float margin_horizontal;
-
-    /*public float getMargin_vertical() {
-        return margin_vertical;
-    }*/
 
     private float margin_vertical;
 
@@ -84,6 +78,10 @@ public class SunView extends View implements Observer{
 
     }
 
+    /**
+     * Creates a white background for the canvas
+     * @param canvas the canvas that we are painting white
+     */
     private void drawBackground (Canvas canvas) {
         canvas.drawARGB(0, 255, 255, 255);
     }
@@ -96,6 +94,10 @@ public class SunView extends View implements Observer{
         drawSunBlock(canvas, x, y, b.type, paint);
     }
 
+    /**
+     * Draws all blocks in the puzzle on the canvas
+     * @param canvas the canvas on which we are painting our blocks
+     */
     private void drawSunBlocks (Canvas canvas) {
         Paint sunBlockPaint = new Paint();
         Block[] blocks = game.getPuzzle().getBlocks();
@@ -104,7 +106,14 @@ public class SunView extends View implements Observer{
         }
     }
 
-
+    /**
+     * Draws a block from the puzzle on the canvas
+     * @param canvas
+     * @param x
+     * @param y
+     * @param type
+     * @param paint
+     */
     private void drawSunBlock (Canvas canvas, float x, float y, int type, Paint paint) {
         float xSize = BlockInfo.getDimensions(type).x * cell_size + (BlockInfo.getDimensions(type).x - 1) * cell_spacing;
         float ySize = BlockInfo.getDimensions(type).y * cell_size + (BlockInfo.getDimensions(type).y - 1) * cell_spacing;
@@ -126,16 +135,26 @@ public class SunView extends View implements Observer{
 
     }
 
+    /**
+     * Gets the coordinates of a block considering block widths, margins and cell spacings.
+     * @param b the block whose coordinates we want
+     * @return a tuple containing block b's coordinates
+     */
     public Tuple<Float> getBlockCoords (Block b) {
         float x = margin_horizontal + b.x * cell_size;
         float y = margin_vertical + b.y * cell_size;
         x += b.x * cell_spacing;
         y += b.y * cell_spacing;
-        x-= cell_spacing/2f;
-        y-= cell_spacing/2f;
+        x-= cell_spacing / 2f;
+        y-= cell_spacing / 2f;
         return new Tuple<>(x,y);
     }
 
+    /**
+     * Gets the size of a block considering block widths, margins and cell spacings.
+     * @param b the block whose size we want
+     * @return a tuple containing block b's size
+     */
     public Tuple<Float> getBlockSize (Block b) {
         float x = margin_horizontal + b.x * cell_size;
         float y = margin_vertical + b.y * cell_size;

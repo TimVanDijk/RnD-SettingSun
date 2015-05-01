@@ -10,12 +10,23 @@ public enum Direction {
 
     final int dx,dy;
 
+    /**
+     * Constructor for Direction
+     * @param dx the distance that is moved on the horizontal axis
+     * @param dy the distance that is moved on the vertical axis
+     */
     private Direction(int dx, int dy)
     {
         this.dx=dx;
         this.dy=dy;
     }
 
+    /**
+     * Computes the general direction given the distance that is moved on the horizontal axis and on the vertical axis
+     * @param f he distance that is moved on the horizontal axis
+     * @param g the distance that is moved on the vertical axis
+     * @return the general direction in which is moved
+     */
     public static Direction between(float f, float g)
     {
         if(Math.abs(f) > Math.abs(g))

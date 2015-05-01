@@ -9,6 +9,12 @@ public class Block {
     public int type;
     public float x, y;
 
+    /**
+     * Constructor for Block
+     * @param x the x coordinate of the block
+     * @param y the y coordinate of the block
+     * @param type the type of the block
+     */
     public Block(int x, int y, int type){
         this.x = (float) x;
         this.y = (float) y;

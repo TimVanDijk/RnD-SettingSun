@@ -14,8 +14,8 @@ import java.util.Observer;
 
 /**
  * This is the activity that starts when the app is run.
- * It creates a game, controller, view and a reset button and makes sure that they can interact with each other
- * @authors Ward Theunisse, Tim van Dijk, Martijn Heitkönig en Luuk van Bitterswijk
+ *
+ * @author Ward Theunisse, Tim van Dijk, Martijn Heitkönig, Luuk van Bitterswijk
  */
 public class MainActivity extends Activity implements Observer {
 
@@ -28,6 +28,9 @@ public class MainActivity extends Activity implements Observer {
     private MainActivity myself = this;
 
     @Override
+    /**
+     * Creates a game, a SunView and a controller. Then connects these objects to allow them to interact with one another
+     */
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -53,21 +56,26 @@ public class MainActivity extends Activity implements Observer {
     }
 
     @Override
+    /**
+     * Handles action bar item clicks. The action bar will automatically handle click on the Home/Up botton,
+     * as long as you specify a parent activity in AndroidManifest.xml
+     *
+     * @param item a single item in a menu
+     *
+     * @return When the menu item is successfully handled it returns true.
+     *         If it isn't it calls the superclass implementation of onOptionsItemSelected() (whose default implementation returns false)
+     */
     public boolean onOptionsItemSelected (MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+        return (id == R.id.action_settings ? true : super.onOptionsItemSelected(item));
     }
 
     @Override
+    /**
+     * This method is called only when the puzzle is solved. It creates a dialog telling the user that he has won and how many moves were used.
+     * @param observable the observable that is notified
+     * @param object ???
+     */
     public void update (Observable observable, Object o) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("VICTORY");
@@ -76,17 +84,29 @@ public class MainActivity extends Activity implements Observer {
     }
 
     @Override
+    /**
+     * This method is called when the back button is pressed.
+     * It makes the user's previous move undone.
+     */
     public void onBackPressed () {
         game.removePuzzle();
         sv.postInvalidate();
     }
 
+    /**
+     * Creates a dialog that asks the user if he really wants to reset the puzzle.
+     * @param v the view on which the dialog is to be displayed
+     */
     public void createResetDialog (View v) {
         AlertDialog.Builder resetAlert = new AlertDialog.Builder (this);
         resetAlert.setTitle("Reset puzzle?");
         final CharSequence[] options = {"Yes","No"};
         resetAlert.setItems(options, new DialogInterface.OnClickListener() {
             @Override
+            /**
+             * This method is called when the user selects an option from the dialog.
+             * If yes is selected, it closes the dialog and starts a new game. Otherwise, it only closes the dialog
+             */
             public void onClick(DialogInterface dialog, int item){
                 if (item == 0) {
                     game = new Game();
