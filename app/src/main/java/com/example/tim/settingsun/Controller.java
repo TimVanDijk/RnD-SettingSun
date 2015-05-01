@@ -83,10 +83,6 @@ public class Controller extends Observable implements OnTouchListener{
 
         }
 
-        if (touchedBlock != null) {
-
-        }
-
         if(event.getAction() == MotionEvent.ACTION_UP && touchedBlock != null)
         {
             Direction d = Direction.between(event.getX() - startx, event.getY() - starty);

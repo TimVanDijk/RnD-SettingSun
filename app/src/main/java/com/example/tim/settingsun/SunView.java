@@ -4,11 +4,11 @@ import java.util.Observable;
 import java.util.Observer;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 public class SunView extends View implements Observer{
@@ -27,16 +27,21 @@ public class SunView extends View implements Observer{
     private final int BLOCK_COLOR = Color.rgb(103,224,240);
     private final int BLOCK_SHADOW = Color.rgb(60,189,207);
 
+    private String movesUsedString;
+
     public SunView (Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        movesUsedString = context.getString(R.string.movesUsed);
     }
 
     public SunView (Context context, AttributeSet attrs) {
         super(context, attrs);
+        movesUsedString = context.getString(R.string.movesUsed);
     }
 
     public SunView (Context context) {
         super(context);
+        movesUsedString = context.getString(R.string.movesUsed);
     }
 
     public void setGame (Game game) {
@@ -73,7 +78,7 @@ public class SunView extends View implements Observer{
             Paint paint = new Paint();
             paint.setColor(Color.BLACK);
             paint.setTextSize(40);
-            canvas.drawText("Moves:" + game.getMoves(), margin_horizontal / 2.0f, margin_vertical / 2.0f, paint);
+            canvas.drawText(movesUsedString + game.getMoves(), margin_horizontal / 2.0f, margin_vertical / 2.0f, paint);
         }
 
     }

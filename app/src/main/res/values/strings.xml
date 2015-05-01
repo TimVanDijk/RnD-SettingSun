@@ -3,4 +3,11 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="resetButtonString">Reset puzzle</string>
+    <string name="score">Score: </string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="resetPuzzle">Reset Puzzle?</string>
+    <string name="movesUsed">Moves used: </string>
+    <string name="victoryMsg">VICTORY</string>
 </resources>

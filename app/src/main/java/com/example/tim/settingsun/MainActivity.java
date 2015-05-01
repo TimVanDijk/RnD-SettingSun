@@ -78,8 +78,8 @@ public class MainActivity extends Activity implements Observer {
      */
     public void update (Observable observable, Object o) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("VICTORY");
-        builder.setMessage("Moves used: " + game.getMoves());
+        builder.setTitle(getString(R.string.victoryMsg));
+        builder.setMessage(getString(R.string.movesUsed) + game.getMoves());
         builder.create().show();
     }
 
@@ -99,8 +99,8 @@ public class MainActivity extends Activity implements Observer {
      */
     public void createResetDialog (View v) {
         AlertDialog.Builder resetAlert = new AlertDialog.Builder (this);
-        resetAlert.setTitle("Reset puzzle?");
-        final CharSequence[] options = {"Yes","No"};
+        resetAlert.setTitle(getString(R.string.resetPuzzle));
+        final CharSequence[] options = {getString(R.string.yes), getString(R.string.no)};
         resetAlert.setItems(options, new DialogInterface.OnClickListener() {
             @Override
             /**
