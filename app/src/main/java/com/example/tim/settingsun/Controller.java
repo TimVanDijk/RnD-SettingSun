@@ -1,16 +1,15 @@
 package com.example.tim.settingsun;
 
-import android.app.AlertDialog;
 import android.os.Handler;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import java.util.Observable;
 
 /**
- * Created by tim on 28-4-15.
- */
+* This class is the controller for our game. It detects and handles user input.
+* @authors Ward Theunisse, Tim van Dijk, Martijn Heitkönig en Luuk van Bitterswijk
+*/
 public class Controller extends Observable implements OnTouchListener{
 
     private float startx, starty;
@@ -21,23 +20,19 @@ public class Controller extends Observable implements OnTouchListener{
 
     private SunView view;
 
-    Block a;
+    private Block touchedBlock;
 
-    Controller(Game game, SunView view)
-    {
-        Log.d("motion","controller created");
+    Controller (Game game, SunView view) {
         this.game = game;
         this.handler = new Handler();
         this.resetTouchLocation();
         this.view = view;
     }
 
-
-    private void resetTouchLocation()
     /**
      * Sets the x and y location to -1, which means that no presses are registered at this moment
      */
-    {
+    private void resetTouchLocation() {
         this.startx = -1;
         this.starty = -1;
     }
@@ -45,55 +40,49 @@ public class Controller extends Observable implements OnTouchListener{
 
 
     @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        //Log.d("Controller","Touched");
+    public boolean onTouch (View v, MotionEvent event) {
         /**
          * Checks whether the user touches the screen. If it does, it finds out which block is pressed,
          * and in what direction the user swipes. If it makes for a valid move (a block is pressed,
          * no blocks in the way, new position not outside the playing field), it moves it.
          */
 
-        if(startx == -1 || starty == -1)
-        {
+        if (startx == -1 || starty == -1) {
             startx = event.getX();
             starty = event.getY();
 
-            boolean found=false;
+            boolean found = false;
+
             for (Block b: game.getPuzzle().getBlocks()) {
-                Log.d("blockcheck","checked");
                 float left = view.getBlockCoords(b).x;
                 float right = view.getBlockSize(b).x + left;
                 float top = view.getBlockCoords(b).y;
                 float bottom = view.getBlockSize(b).y + top;
 
                 if (startx >= left && startx <= right && starty >= top && starty <= bottom) {
-                    a = b;
-                    found=true;
+                    touchedBlock= b;
+                    found = true;
                 }
             }
             if (!found) {
-                a=null;
-                Log.d("Monitor","Ongeldig blok proberen te verschuiven");
+                touchedBlock = null;
                 this.resetTouchLocation();
             }
 
         }
 
-        if (a!=null) {
+        if (touchedBlock != null) {
 
         }
 
-        if(event.getAction() == MotionEvent.ACTION_UP && a!=null)
+        if(event.getAction() == MotionEvent.ACTION_UP && touchedBlock != null)
         {
-            Log.d("motionevent","motion detected ax="+a.x+" ay="+a.y);
             Direction d = Direction.between(event.getX()-startx, event.getY()-starty);
             //check if can move
-            if (game.getPuzzle().canMove((int)a.x,(int)a.y,d)) {
+            if (game.getPuzzle().canMove((int) touchedBlock.x,(int) touchedBlock.y,d)) {
                 game.addPuzzle(new Puzzle(game.getPuzzle()));
-                Log.d("check","check");
-                game.getPuzzle().moveBlock((int)a.x,(int)a.y,d);
-                Log.d("after","after");
-                a=null;
+                game.getPuzzle().moveBlock((int) touchedBlock.x,(int) touchedBlock.y,d);
+                touchedBlock =null;
                 view.postInvalidate();
                 if (game.isGameWon()) {
                     setChanged();
@@ -101,16 +90,10 @@ public class Controller extends Observable implements OnTouchListener{
                 }
             }
             else {
-                a=null;
+                touchedBlock = null;
             }
-            //execute move
             this.resetTouchLocation();
         }
-
         return true;
-    }
-
-    public void start(){
-        //Do something useful
     }
 }

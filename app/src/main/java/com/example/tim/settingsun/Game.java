@@ -1,56 +1,64 @@
 package com.example.tim.settingsun;
 
-import android.util.Log;
-
 import java.util.LinkedList;
 import java.util.Observable;
 
 /**
- * Created by tim on 28-4-15.
+ * This game class is the model in our game.
+ * It contains the puzzle and its history and it provides some methods to manipulate the current puzzle
+ * @author Ward Theunisse, Tim van Dijk, Martijn Heitkönig en Luuk van Bitterswijk
  */
 public class Game extends Observable {
     private LinkedList<Puzzle> history;
     private Puzzle puzzle;
-    public int moves=0;
 
     private final int DEFAULT_WIDTH = 4;
     private final int DEFAULT_HEIGHT = 5;
 
     private int width, height;
+    private int moves = 0;
 
-    public Game () {
+    public Game() {
         history = new LinkedList<>();
         puzzle = new Puzzle();
         width = DEFAULT_WIDTH;
         height = DEFAULT_HEIGHT;
     }
 
-    public Puzzle getPuzzle() {
-        return puzzle;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public void addPuzzle(Puzzle p) {
+    public void addPuzzle (Puzzle p) {
         history.add(p);
         moves++;
     }
 
-    public void removePuzzle() {
-        if (history.size()>0) {
+    public void removePuzzle () {
+        if (history.size() > 0) {
             puzzle = history.removeLast();
             moves--;
         }
     }
 
-    public boolean isGameWon(){
+    public boolean isGameWon (){
         return puzzle.isGameWon();
     }
 
+    public Puzzle getPuzzle () {
+        return puzzle;
+    }
+
+    public int getWidth () {
+        return width;
+    }
+
+    public int getHeight () {
+        return height;
+    }
+
+    public int getMoves () {
+        return moves;
+    }
+
+    public void setMoves (int moves) {
+        this.moves = moves;
+    }
 }
+

@@ -1,7 +1,8 @@
 package com.example.tim.settingsun;
 
 /**
- * Created by tim on 28-4-15.
+ * This class is an enumeration of directions.
+ * @author Maurice Knoop (re-used his code from  his "Snake" game)
  */
 public enum Direction {
 

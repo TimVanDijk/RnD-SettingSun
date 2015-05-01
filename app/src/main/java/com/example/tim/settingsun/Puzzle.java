@@ -1,10 +1,9 @@
 package com.example.tim.settingsun;
 
-import android.util.Log;
-
 /**
- * Created by tim on 28-4-15.
- */
+* The puzzle class stores a puzzle and provides some methods to extract information from that puzzle.
+* @authors Ward Theunisse, Tim van Dijk, Martijn Heitkönig en Luuk van Bitterswijk
+*/
 public class Puzzle {
     public int[][] puzzle;
 
@@ -26,20 +25,17 @@ public class Puzzle {
 
     private boolean addBlock(int x, int y, int type) {
 
-        boolean test = true;
+        boolean valid = true;
 
         for (int i = 0; i < BlockInfo.getDimensions(type).x; i++) {
             for (int j = 0; j < BlockInfo.getDimensions(type).y; j++) {
-                if (puzzle[x + i][y + j] != 0) {
-                    Log.d("MONITORING", "block not added:(" + x + "," + y + "," + type + ")");
-                    test = false;
-                }
+                if (puzzle[x + i][y + j] != 0)
+                    valid = false;
             }
         }
 
-        if (test) {
+        if (valid) {
             puzzle[x][y] = type;
-            Log.d("MONITORING", "block added");
             for (int i = 0; i < BlockInfo.getDimensions(type).x; i++) {
                 for (int j = 0; j < BlockInfo.getDimensions(type).y; j++) {
                     if (puzzle[x + i][y + j] == 0) {
@@ -49,11 +45,11 @@ public class Puzzle {
                 }
             }
         }
-        return test;
+        return valid;
     }
 
 
-    public void initializePuzzle() {
+    public void initializePuzzle () {
         puzzle = new int[4][5];
 
         addBlock(0,0,2);
@@ -66,21 +62,9 @@ public class Puzzle {
         addBlock(2,3,1);
         addBlock(1,4,1);
         addBlock(2,4,1);
-        /*
-        addBlock(0,3,4);
-        addBlock(0,0,1);
-        addBlock(1,0,1);
-        addBlock(2,0,1);
-        addBlock(3,0,1);
-        addBlock(1,1,1);
-        addBlock(2,1,1);
-        addBlock(3,1,1);
-        addBlock(1,2,1);
-        addBlock(2,2,1);
-        */
     }
 
-    public Block[] getBlocks() {
+    public Block[] getBlocks () {
         Block[] blocks = new Block[10];
         int index = 0;
 
@@ -88,7 +72,6 @@ public class Puzzle {
             for (int j = 0; j < 5; j++) {
                 if (puzzle[i][j] > 0) {
                     blocks[index] = new Block(i, j, puzzle[i][j]);
-                    Log.d("Monitor","block added to array: " +index);
                     index++;
                 }
             }
@@ -110,14 +93,13 @@ public class Puzzle {
 
     }
 
-    public boolean canMove(int x, int y, Direction d){
+    public boolean canMove (int x, int y, Direction d) {
         int width = BlockInfo.getDimensions(puzzle[x][y]).x;
         int height = BlockInfo.getDimensions(puzzle[x][y]).y;
 
         if (isGameWon())
             return false;
         //check of binnen scherm
-        //check hoeft niet aan beide kanten, want als waar voor 1 kant, ook waar voor ander
         if (x + d.dx < 0)
             return false;
         if (x + width + d.dx - 1 >= 4)
@@ -159,7 +141,7 @@ public class Puzzle {
         return true;
     }
 
-    public boolean isGameWon(){
+    public boolean isGameWon () {
         return puzzle[1][3] == 4;
     }
 }

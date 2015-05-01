@@ -33,30 +33,20 @@ public class SunView extends View implements Observer{
     private final int BLOCK_COLOR = Color.rgb(103,224,240);
     private final int BLOCK_SHADOW = Color.rgb(60,189,207);
 
-    public SunView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public SunView (Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init();
     }
 
-    public SunView(Context context, AttributeSet attrs) {
+    public SunView (Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
     }
 
-    public SunView(Context context) {
+    public SunView (Context context) {
         super(context);
-        init();
     }
 
-    private void init()
-    {
-        // nothing to do
-    }
-
-
-    public void setGame(Game game) {
-
-        if(this.game!= null)
+    public void setGame (Game game) {
+        if(this.game != null)
             this.game.deleteObserver(this);
         this.game = game;
         this.game.addObserver(this);
@@ -64,9 +54,9 @@ public class SunView extends View implements Observer{
     }
 
     @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+    protected void onSizeChanged (int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        if(game==null)
+        if (game == null)
             return;
         // calculate the dimensions
         cell_size = Math.min(w / game.getWidth(), h / game.getHeight());
@@ -81,8 +71,7 @@ public class SunView extends View implements Observer{
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
-        //Log.d("MONITORING", "viewposx "+getLeft()+ " viewposy "+getTop());
+    protected void onDraw (Canvas canvas) {
         super.onDraw(canvas);
         this.drawBackground(canvas);
         if (game != null && game.getPuzzle().getBlocks()[0] != null) {
@@ -90,25 +79,24 @@ public class SunView extends View implements Observer{
             Paint paint = new Paint();
             paint.setColor(Color.BLACK);
             paint.setTextSize(40);
-            canvas.drawText("Moves:" + game.moves,margin_horizontal/2f,margin_vertical/2f,paint);
+            canvas.drawText("Moves:" + game.getMoves(), margin_horizontal / 2.0f, margin_vertical / 2.0f, paint);
         }
 
     }
 
-    private void drawBackground(Canvas canvas) {
+    private void drawBackground (Canvas canvas) {
         canvas.drawARGB(0, 255, 255, 255);
     }
 
     private void drawSunBlockAdapt(Canvas canvas, Block b, Paint paint) {
         float x = margin_horizontal + b.x * cell_size;
         float y = margin_vertical + b.y * cell_size;
-        Log.d("MONITORING", "b.x=" + b.x + " b.y="+b.y);
         x += b.x * cell_spacing;
         y += b.y * cell_spacing;
         drawSunBlock(canvas, x, y, b.type, paint);
     }
 
-    private void drawSunBlocks(Canvas canvas) {
+    private void drawSunBlocks (Canvas canvas) {
         Paint sunBlockPaint = new Paint();
         Block[] blocks = game.getPuzzle().getBlocks();
         for (Block b: blocks) {
@@ -117,7 +105,7 @@ public class SunView extends View implements Observer{
     }
 
 
-    private void drawSunBlock(Canvas canvas, float x, float y, int type, Paint paint) {
+    private void drawSunBlock (Canvas canvas, float x, float y, int type, Paint paint) {
         float xSize = BlockInfo.getDimensions(type).x * cell_size + (BlockInfo.getDimensions(type).x - 1) * cell_spacing;
         float ySize = BlockInfo.getDimensions(type).y * cell_size + (BlockInfo.getDimensions(type).y - 1) * cell_spacing;
         float centerX = BlockInfo.getCenter(type).x * cell_size + 0.5f *(BlockInfo.getDimensions(type).x - 1) * cell_spacing;
@@ -133,12 +121,12 @@ public class SunView extends View implements Observer{
     }
 
     @Override
-    public void update(Observable observable, Object data) {
+    public void update (Observable observable, Object data) {
         this.postInvalidate();
 
     }
 
-    public Tuple<Float> getBlockCoords(Block b) {
+    public Tuple<Float> getBlockCoords (Block b) {
         float x = margin_horizontal + b.x * cell_size;
         float y = margin_vertical + b.y * cell_size;
         x += b.x * cell_spacing;
@@ -148,7 +136,7 @@ public class SunView extends View implements Observer{
         return new Tuple<>(x,y);
     }
 
-    public Tuple<Float> getBlockSize(Block b) {
+    public Tuple<Float> getBlockSize (Block b) {
         float x = margin_horizontal + b.x * cell_size;
         float y = margin_vertical + b.y * cell_size;
         x += b.x * cell_spacing;

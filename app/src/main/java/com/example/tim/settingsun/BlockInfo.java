@@ -2,9 +2,13 @@ package com.example.tim.settingsun;
 
 import android.graphics.Color;
 
+/**
+ * This class contains static methods that can be used to get mode information on a block given its type.
+ * @authors Ward Theunisse, Tim van Dijk, Martijn Heitkönig en Luuk van Bitterswijk
+ */
 public class BlockInfo {
 
-    public static Tuple<Integer> getDimensions(int type) {
+    public static Tuple<Integer> getDimensions (int type) {
         /**
          * Fetches the desired block size by type. The type can be a 1x1, 1x2, 2x1,or 2x2 block.
          */
@@ -22,7 +26,7 @@ public class BlockInfo {
         }
     }
 
-    public static Tuple<Float> getCenter(int type){
+    public static Tuple<Float> getCenter (int type) {
         /**
          * Calculates the center coordinates of the block, depending in block type
          */
@@ -32,7 +36,7 @@ public class BlockInfo {
         );
     }
 
-    public static int getColor(int type){
+    public static int getColor (int type) {
         /**
          * Assigns different colors to different sized blocks
          */
